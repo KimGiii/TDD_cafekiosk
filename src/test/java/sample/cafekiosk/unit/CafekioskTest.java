@@ -1,5 +1,6 @@
 package sample.cafekiosk.unit;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import sample.cafekiosk.unit.beverage.Americano;
 import sample.cafekiosk.unit.beverage.Latte;
@@ -21,6 +22,8 @@ class CafekioskTest {
         System.out.println(">>> 담긴 음료 : " + cafekiosk.getBeverages().get(0).getName());
     }
 
+    //  @DisplayName("음료 1개 추가 테스트")
+    @DisplayName("음료 1개를 추가하면 주문 목록에 담긴다.")
     @Test
     void add() {
         Cafekiosk cafekiosk = new Cafekiosk();
@@ -48,8 +51,8 @@ class CafekioskTest {
         Americano americano = new Americano();
 
         assertThatThrownBy(() -> cafekiosk.add(americano, 0))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("음료는 한 잔 이상 주문해야 합니다.");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("음료는 한 잔 이상 주문해야 합니다.");
     }
 
     @Test
@@ -76,6 +79,24 @@ class CafekioskTest {
 
         cafekiosk.clear();
         assertThat(cafekiosk.getBeverages()).isEmpty();
+    }
+
+    @DisplayName("주문 목록에 담긴 상품들의 총 금액을 계산할 수 있다.")
+    @Test
+    void calculateTotalPrice() {
+        // Given
+        Cafekiosk cafekiosk = new Cafekiosk();
+        Americano americano = new Americano();
+        Latte latte = new Latte();
+
+        cafekiosk.add(americano);
+        cafekiosk.add(latte);
+
+        // When
+        int totalPrice = cafekiosk.calculateTotalPrice();
+
+        // Then
+        assertThat(totalPrice).isEqualTo(8500);
     }
 
     @Test
@@ -109,8 +130,8 @@ class CafekioskTest {
         cafekiosk.add(americano);
 
         assertThatThrownBy(() -> cafekiosk.createOrder(LocalDateTime.of(2025, 3, 3, 23, 1)))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("주문 시간이 아닙니다. 관리자에게 문의하세요.");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("주문 시간이 아닙니다. 관리자에게 문의하세요.");
     }
 
 }

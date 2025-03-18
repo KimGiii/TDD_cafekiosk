@@ -39,13 +39,16 @@ public class Cafekiosk {
     }
 
     public int calculateTotalPrice() {
-        int totalPrice = 0;
-        for (Beverage beverage : beverages) {
-            totalPrice += beverage.getPrice();
-        }
-        return totalPrice;
+//        int totalPrice = 0;
+//        for (Beverage beverage : beverages) {
+//            totalPrice += beverage.getPrice();
+//        }
+//        return totalPrice;
+
+        return beverages.stream().mapToInt(Beverage::getPrice).sum();
     }
 
+    // LocalDateTime.now를 테스트하기 어렵..
     public Order createOrder() {
         LocalDateTime currentDateTime = LocalDateTime.now();
         LocalTime currentTime = currentDateTime.toLocalTime();
@@ -57,6 +60,7 @@ public class Cafekiosk {
         return new Order(currentDateTime, beverages);
     }
 
+    // LocalDateTime을 외부로 빼냄
     public Order createOrder(LocalDateTime currentDateTime) {
         LocalTime currentTime = currentDateTime.toLocalTime();
 
